@@ -1,7 +1,13 @@
 import styles from "./LoaderV2.module.css";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css"
 
 const LoaderV2 = () => {
-  return <img src="/images/loader.webp" className={styles.loader} />;
+  return (
+    <div className={styles.loaderWrapper}>
+      <Skeleton height={50} count={3} />
+    </div>
+  );
 };
 
 export default LoaderV2;

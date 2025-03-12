@@ -7,7 +7,7 @@ import DocumentIcon from "@/src/components/icons/Document/DocumentIcon";
 import LoaderV2 from "@/src/components/common/LoaderV2/LoaderV2";
 
 const Positions = (): JSX.Element => {
-  const {data, isLoading} = usePositions();
+  const { data, isLoading } = usePositions();
 
   return (
     <section className={styles.positions}>
@@ -15,7 +15,6 @@ const Positions = (): JSX.Element => {
       {isLoading ? (
         <div className={styles.positionsFallback}>
           <LoaderV2 />
-          <p>Loading positions...</p>
         </div>
       ) : (data && data.length === 0) || !data ? (
         <div className={styles.positionsFallback}>
