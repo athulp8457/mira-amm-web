@@ -71,7 +71,7 @@
 .tokenDisplayValue,
 .numberAndCopy {
   font-size: 14px;
-  color: #ffffff;
+  color: var(--background-white);
 }
 
 .numberAndCopy {

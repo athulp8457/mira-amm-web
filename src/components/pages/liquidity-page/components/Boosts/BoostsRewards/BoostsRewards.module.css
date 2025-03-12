@@ -59,7 +59,7 @@
   align-items: center;
   gap: 8px;
   height: 25px;
-  color: #ffffff;
+  color: var(--background-white);
 }
 
 .rewardsValue p {
@@ -94,7 +94,7 @@
 .rank {
   font-size: 20px;
   font-weight: 400;
-  color: #ffffff;
+  color: var(--background-white);
 }
 
 .disclaimer {

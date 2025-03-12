@@ -18,5 +18,5 @@
 
 .pointsSubtitle {
   font-size: 16px;
-  color: #ffffff;
+  color: var(--background-white);
 }
