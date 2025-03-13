@@ -606,55 +606,61 @@ const Swap = () => {
             }
           />
           {review && (
-            <div className={styles.summary}>
-              <div className={styles.summaryEntry}>
-                <p>Rate</p>
-                {previewLoading || tradeState === TradeState.REEFETCHING ? (
-                  <Loader color="gray" />
-                ) : (
-                  <p>{exchangeRate}</p>
-                )}
-              </div>
-
-              <div className={styles.summaryEntry}>
-                <p>Order routing</p>
-                <div className={styles.feeLine}>
+            <div className={styles.review}>
+              <div className={styles.summary}>
+                <div className={styles.summaryEntry}>
+                  <p>Rate:</p>
                   {previewLoading || tradeState === TradeState.REEFETCHING ? (
                     <Loader color="gray" />
                   ) : (
-                    pools?.map((pool, index) => {
-                      const poolKey = createPoolKey(pool);
+                    <p>{exchangeRate}</p>
+                  )}
+                </div>
 
-                      return (
-                        <div className={styles.poolsFee} key={poolKey}>
-                          <SwapRouteItem pool={pool} />
-                          {index !== pools.length - 1 && "+"}
-                        </div>
-                      );
-                    })
+                <div className={styles.summaryEntry}>
+                  <p>Routing:</p>
+                  <div className={styles.feeLine}>
+                    {previewLoading || tradeState === TradeState.REEFETCHING ? (
+                      <Loader color="gray" />
+                    ) : (
+                      pools?.map((pool, index) => {
+                        const poolKey = createPoolKey(pool);
+
+                        return (
+                          <div className={styles.poolsFee} key={poolKey}>
+                            <SwapRouteItem pool={pool} />
+                            {index !== pools.length - 1 && "+"}
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
+
+                <div className={styles.summaryEntry}>
+                  <p>Estimated fees:</p>
+                  {previewLoading || tradeState === TradeState.REEFETCHING ? (
+                    <Loader color="gray" />
+                  ) : (
+                    <p>
+                      {feeValue} {sellMetadata.symbol}
+                    </p>
+                  )}
+                </div>
+
+                <div className={styles.summaryEntry}>
+                  <p>Gas cost:</p>
+                  {txCostPending ? (
+                    <Loader color="gray" />
+                  ) : (
+                    <p>{txCost?.toFixed(9)} ETH</p>
                   )}
                 </div>
               </div>
-
-              <div className={styles.summaryEntry}>
-                <p>Estimated fees</p>
-                {previewLoading || tradeState === TradeState.REEFETCHING ? (
-                  <Loader color="gray" />
-                ) : (
-                  <p>
-                    {feeValue} {sellMetadata.symbol}
-                  </p>
-                )}
-              </div>
-
-              <div className={styles.summaryEntry}>
-                <p>Network cost</p>
-                {txCostPending ? (
-                  <Loader color="gray" />
-                ) : (
-                  <p>{txCost?.toFixed(9)} ETH</p>
-                )}
-              </div>
+              <PriceImpact
+                reservesPrice={reservesPrice}
+                previewPrice={previewPrice}
+              />
             </div>
           )}
 
@@ -679,10 +685,6 @@ const Swap = () => {
           )}
         </div>
         <div className={styles.rates}>
-          <PriceImpact
-            reservesPrice={reservesPrice}
-            previewPrice={previewPrice}
-          />
           <ExchangeRate swapState={swapState} />
         </div>
       </div>

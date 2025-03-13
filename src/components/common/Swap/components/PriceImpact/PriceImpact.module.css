@@ -1,14 +1,8 @@
 .priceImpact {
-  width: fit-content;
+  margin-top: 10px;
   display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 12px;
-  line-height: 18px;
+  justify-content: space-between;
   color: #ffffffa3;
-  background: transparent;
-  border: none;
-  cursor: pointer;
 }
 
 .redText {
@@ -25,10 +19,4 @@
 
 .hidden {
   opacity: 0;
-}
-
-@media (min-width: 1024px) {
-  .priceImpact {
-    font-size: 13px;
-  }
 }

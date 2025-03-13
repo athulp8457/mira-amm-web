@@ -76,13 +76,24 @@
   /* color: var(--content-primary); */
 }
 
+.review {
+  background-color: var(--mc-black);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  font-family: "EllographCF";
+  font-size: 14px;
+}
+
 .summary {
   display: flex;
   flex-direction: column;
   gap: 8px;
   color: var(--content-tertiary);
-  font-size: 12px;
   line-height: 16px;
+  color: var(--mc-green);
 }
 
 .summaryEntry {
@@ -118,7 +129,7 @@
 
 .rates {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
 }
 
 @media (min-width: 1024px) {
@@ -133,7 +144,7 @@
 
   .summary,
   .summary p {
-    font-size: 13px;
+    font-size: 14px;
     line-height: 18px;
   }
 }

@@ -33,7 +33,7 @@ const PriceImpact: FC<PriceImpactProps> = ({reservesPrice, previewPrice}) => {
   const priceImpactHidden = priceImpactValue === -1;
 
   return (
-    <p
+    <div
       className={clsx(
         styles.priceImpact,
         highPriceImpact && styles.redText,
@@ -41,8 +41,9 @@ const PriceImpact: FC<PriceImpactProps> = ({reservesPrice, previewPrice}) => {
         priceImpactHidden && styles.hidden,
       )}
     >
-      Price impact: {priceImpactValue.toFixed(2)}%
-    </p>
+      <p>Price impact:</p>
+      <p>{priceImpactValue.toFixed(2)}%</p>
+    </div>
   );
 };
 
