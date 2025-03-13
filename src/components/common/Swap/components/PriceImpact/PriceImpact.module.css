@@ -1,8 +1,13 @@
 .priceImpact {
-  margin-top: 10px;
+  color: #ffffffa3;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.priceImpactEntry {
   display: flex;
   justify-content: space-between;
-  color: #ffffffa3;
 }
 
 .redText {

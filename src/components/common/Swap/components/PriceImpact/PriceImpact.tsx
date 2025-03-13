@@ -41,8 +41,13 @@ const PriceImpact: FC<PriceImpactProps> = ({reservesPrice, previewPrice}) => {
         priceImpactHidden && styles.hidden,
       )}
     >
-      <p>Price impact:</p>
-      <p>{priceImpactValue.toFixed(2)}%</p>
+      <div className={styles.priceImpactEntry}>
+        <p>Price impact:</p>
+        <p>{priceImpactValue.toFixed(2)}%</p>
+      </div>
+      {(highPriceImpact || mediumPriceImpact) && (
+        <p>{`WARNING: ${highPriceImpact ? "Large" : "Medium"} Price impact detected`}</p>
+      )}
     </div>
   );
 };
