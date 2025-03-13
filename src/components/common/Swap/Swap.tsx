@@ -563,7 +563,7 @@ const Swap = () => {
     (!amountMissing && !showInsufficientBalance && txCostPending);
 
   // Swap succcess and failure error message for the modal
-  const [successModalSubtitle, errorMessage] = useMemo(() => {
+  const calculateModalContent = () => {
     const currentState = swapStateForPreview.current;
     const successModalSubtitle = `${currentState.sell.amount} ${sellMetadata.symbol} for ${currentState.buy.amount} ${buyMetadata.symbol}`;
 
@@ -584,7 +584,9 @@ const Swap = () => {
     }
 
     return [successModalSubtitle, errorMessage];
-  }, [buyMetadata.symbol, sellMetadata.symbol, swapError, txCostError]);
+  };
+
+  const [successModalSubtitle, errorMessage] = calculateModalContent();
 
   return (
     <>

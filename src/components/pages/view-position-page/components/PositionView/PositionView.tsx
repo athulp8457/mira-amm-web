@@ -169,7 +169,7 @@ const PositionView = ({pool}: Props) => {
 
   const lpTokenDisplayValue = formatUnits(lpTokenBalance || "0", 9);
 
-  const [successModalSubtitle, errorModalSubtitle] = useMemo(() => {
+  const calculateMessages = () => {
     const successMessage = `Removed ${confirmationModalAssetsAmounts.current.firstAsset} ${assetAMetadata.symbol} and ${confirmationModalAssetsAmounts.current.secondAsset} ${assetBMetadata.symbol} from your position`;
 
     let errorMessage: string;
@@ -181,7 +181,9 @@ const PositionView = ({pool}: Props) => {
     }
 
     return [successMessage, errorMessage];
-  }, [assetAMetadata.symbol, assetBMetadata.symbol, removeLiquidityError]);
+  };
+
+  const [successModalSubtitle, errorModalSubtitle] = calculateMessages();
 
   return (
     <>

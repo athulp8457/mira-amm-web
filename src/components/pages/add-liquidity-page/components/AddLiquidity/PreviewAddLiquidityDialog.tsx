@@ -91,7 +91,7 @@ const PreviewAddLiquidityDialog = ({
 
   const feeText = isStablePool ? "0.05%" : "0.3%";
 
-  const [successModalSubtitle, errorModalSubtitle] = useMemo(() => {
+  const calculateMessages = () => {
     const successMessage = `Added ${firstAssetAmountString} ${firstAssetMetadata.symbol} and ${secondAssetAmountString} ${secondAssetMetadata.symbol}`;
 
     let errorMessage: string;
@@ -103,13 +103,9 @@ const PreviewAddLiquidityDialog = ({
     }
 
     return [successMessage, errorMessage];
-  }, [
-    addLiquidityError,
-    firstAssetAmountString,
-    firstAssetMetadata.symbol,
-    secondAssetAmountString,
-    secondAssetMetadata.symbol,
-  ]);
+  };
+
+  const [successModalSubtitle, errorModalSubtitle] = calculateMessages();
 
   return (
     <>
