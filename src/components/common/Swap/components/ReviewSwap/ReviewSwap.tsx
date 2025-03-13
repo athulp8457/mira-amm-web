@@ -1,13 +1,12 @@
 import {FC, memo} from "react";
 import styles from "./ReviewSwap.module.css";
-import {clsx} from "clsx";
 import {TradeState} from "@/src/hooks/useSwapRouter";
-import Loader from "../../../Loader/Loader";
 import {PoolId} from "mira-dex-ts";
 import {createPoolKey} from "@/src/utils/common";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import PriceImpact from "../PriceImpact/PriceImpact";
+import Loader from "../../../Loader/Loader";
 
 interface ReviewSwapProps {
   tradeState: TradeState;
@@ -21,7 +20,17 @@ interface ReviewSwapProps {
   previewPrice: number | undefined;
 }
 
-function SwapRouteItem({pool}: {pool: PoolId}) {
+interface SwapRouteItemProps {
+  pool: PoolId;
+}
+
+interface SummaryEntryProps {
+  label: string;
+  isLoading: boolean;
+  value: React.ReactNode;
+}
+
+const SwapRouteItem: FC<SwapRouteItemProps> = ({pool}) => {
   const firstAssetIcon = useAssetImage(pool[0].bits);
   const secondAssetIcon = useAssetImage(pool[1].bits);
 
@@ -38,7 +47,16 @@ function SwapRouteItem({pool}: {pool: PoolId}) {
       <p>({poolFeePercent}%)</p>
     </>
   );
-}
+};
+
+const SummaryEntry: FC<SummaryEntryProps> = ({label, isLoading, value}) => {
+  return (
+    <div className={styles.summaryEntry}>
+      <p>{label}</p>
+      {isLoading ? <Loader color="gray" /> : <p>{value}</p>}
+    </div>
+  );
+};
 
 const ReviewSwap: FC<ReviewSwapProps> = ({
   tradeState,
@@ -51,59 +69,55 @@ const ReviewSwap: FC<ReviewSwapProps> = ({
   reservesPrice,
   previewPrice,
 }) => {
-  const previewLoading = tradeState === TradeState.LOADING;
+  const isPreviewLoading =
+    tradeState === TradeState.LOADING || tradeState === TradeState.REEFETCHING;
 
   return (
     <div className={styles.review}>
       <div className={styles.summary}>
-        <div className={styles.summaryEntry}>
-          <p>Rate:</p>
-          {previewLoading || tradeState === TradeState.REEFETCHING ? (
-            <Loader color="gray" />
-          ) : (
-            <p>{exchangeRate}</p>
-          )}
-        </div>
+        {/* Rate */}
+        <SummaryEntry
+          label="Rate:"
+          isLoading={isPreviewLoading}
+          value={exchangeRate}
+        />
 
-        <div className={styles.summaryEntry}>
-          <p>Routing:</p>
-          <div className={styles.feeLine}>
-            {previewLoading || tradeState === TradeState.REEFETCHING ? (
-              <Loader color="gray" />
-            ) : (
-              pools?.map((pool, index) => {
+        {/* Routing */}
+        <SummaryEntry
+          label="Routing:"
+          isLoading={isPreviewLoading}
+          value={
+            <div className={styles.feeLine}>
+              {pools?.map((pool, index) => {
                 const poolKey = createPoolKey(pool);
-
                 return (
                   <div className={styles.poolsFee} key={poolKey}>
                     <SwapRouteItem pool={pool} />
                     {index !== pools.length - 1 && "+"}
                   </div>
                 );
-              })
-            )}
-          </div>
-        </div>
+              })}
+            </div>
+          }
+        />
 
-        <div className={styles.summaryEntry}>
-          <p>Estimated fees:</p>
-          {previewLoading || tradeState === TradeState.REEFETCHING ? (
-            <Loader color="gray" />
-          ) : (
-            <p>
+        {/* Estimated Fees */}
+        <SummaryEntry
+          label="Estimated fees:"
+          isLoading={isPreviewLoading}
+          value={
+            <>
               {feeValue} {sellMetadataSymbol}
-            </p>
-          )}
-        </div>
+            </>
+          }
+        />
 
-        <div className={styles.summaryEntry}>
-          <p>Gas cost:</p>
-          {txCostPending ? (
-            <Loader color="gray" />
-          ) : (
-            <p>{txCost?.toFixed(9)} ETH</p>
-          )}
-        </div>
+        {/* Gas Cost */}
+        <SummaryEntry
+          label="Gas cost:"
+          isLoading={txCostPending}
+          value={<>{txCost?.toFixed(9)} ETH</>}
+        />
       </div>
       <PriceImpact reservesPrice={reservesPrice} previewPrice={previewPrice} />
     </div>
