@@ -10,12 +10,9 @@ import ConvertIcon from "@/src/components/icons/Convert/ConvertIcon";
 import useModal from "@/src/hooks/useModal/useModal";
 import useSwap from "@/src/hooks/useSwap/useSwap";
 
-import Loader from "@/src/components/common/Loader/Loader";
 import CoinsListModal from "@/src/components/common/Swap/components/CoinsListModal/CoinsListModal";
 import ExchangeRate from "@/src/components/common/Swap/components/ExchangeRate/ExchangeRate";
-import PriceImpact from "@/src/components/common/Swap/components/PriceImpact/PriceImpact";
 import SettingsModalContent from "@/src/components/common/Swap/components/SettingsModalContent/SettingsModalContent";
-import {useAssetImage} from "@/src/hooks/useAssetImage";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import {useAssetPrice} from "@/src/hooks/useAssetPrice";
 import useBalances from "@/src/hooks/useBalances/useBalances";
@@ -26,7 +23,7 @@ import useInitialSwapState from "@/src/hooks/useInitialSwapState/useInitialSwapS
 import useReservesPrice from "@/src/hooks/useReservesPrice";
 import usePreviewV2 from "@/src/hooks/useSwapPreviewV2";
 import {TradeState} from "@/src/hooks/useSwapRouter";
-import {createPoolKey, openNewTab} from "@/src/utils/common";
+import {openNewTab} from "@/src/utils/common";
 import {FuelAppUrl} from "@/src/utils/constants";
 import {
   B256Address,
@@ -37,9 +34,9 @@ import {
   ScriptTransactionRequest,
   TransactionCost,
 } from "fuels";
-import {PoolId} from "mira-dex-ts";
 import {SlippageSetting} from "../SlippageSetting/SlippageSetting";
 import StatusModal, {ModalType} from "../StatusModal";
+import ReviewSwap from "./components/ReviewSwap/ReviewSwap";
 import styles from "./Swap.module.css";
 
 export type CurrencyBoxMode = "buy" | "sell";
@@ -66,25 +63,6 @@ const initialInputsState: InputsState = {
 export type SlippageMode = "auto" | "custom";
 
 export const DefaultSlippageValue = 100;
-
-function SwapRouteItem({pool}: {pool: PoolId}) {
-  const firstAssetIcon = useAssetImage(pool[0].bits);
-  const secondAssetIcon = useAssetImage(pool[1].bits);
-
-  const firstAssetMetadata = useAssetMetadata(pool[0].bits);
-  const secondAssetMetadata = useAssetMetadata(pool[1].bits);
-
-  const isStablePool = pool[2];
-  const poolFeePercent = isStablePool ? 0.05 : 0.3;
-
-  return (
-    <>
-      <img src={firstAssetIcon || ""} alt={firstAssetMetadata.symbol} />
-      <img src={secondAssetIcon || ""} alt={secondAssetMetadata.symbol} />
-      <p>({poolFeePercent}%)</p>
-    </>
-  );
-}
 
 const Swap = () => {
   const [SettingsModal, openSettingsModal, closeSettingsModal] = useModal();
@@ -637,56 +615,17 @@ const Swap = () => {
             }
           />
           {review && (
-            <div className={styles.summary}>
-              <div className={styles.summaryEntry}>
-                <p>Rate</p>
-                {previewLoading || tradeState === TradeState.REEFETCHING ? (
-                  <Loader color="gray" />
-                ) : (
-                  <p>{exchangeRate}</p>
-                )}
-              </div>
-
-              <div className={styles.summaryEntry}>
-                <p>Order routing</p>
-                <div className={styles.feeLine}>
-                  {previewLoading || tradeState === TradeState.REEFETCHING ? (
-                    <Loader color="gray" />
-                  ) : (
-                    pools?.map((pool, index) => {
-                      const poolKey = createPoolKey(pool);
-
-                      return (
-                        <div className={styles.poolsFee} key={poolKey}>
-                          <SwapRouteItem pool={pool} />
-                          {index !== pools.length - 1 && "+"}
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-              </div>
-
-              <div className={styles.summaryEntry}>
-                <p>Estimated fees</p>
-                {previewLoading || tradeState === TradeState.REEFETCHING ? (
-                  <Loader color="gray" />
-                ) : (
-                  <p>
-                    {feeValue} {sellMetadata.symbol}
-                  </p>
-                )}
-              </div>
-
-              <div className={styles.summaryEntry}>
-                <p>Network cost</p>
-                {txCostPending ? (
-                  <Loader color="gray" />
-                ) : (
-                  <p>{txCost?.toFixed(9)} ETH</p>
-                )}
-              </div>
-            </div>
+            <ReviewSwap
+              tradeState={tradeState}
+              exchangeRate={exchangeRate}
+              pools={pools}
+              feeValue={feeValue}
+              sellMetadataSymbol={sellMetadata.symbol}
+              txCostPending={txCostPending}
+              txCost={txCost}
+              reservesPrice={reservesPrice}
+              previewPrice={previewPrice}
+            />
           )}
 
           {!isConnected && (
@@ -710,10 +649,6 @@ const Swap = () => {
           )}
         </div>
         <div className={styles.rates}>
-          <PriceImpact
-            reservesPrice={reservesPrice}
-            previewPrice={previewPrice}
-          />
           <ExchangeRate swapState={swapState} />
         </div>
       </div>
