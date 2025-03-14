@@ -103,7 +103,6 @@ const Swap = () => {
     {tx: ScriptTransactionRequest; txCost: TransactionCost} | undefined
   >();
   const [txCost, setTxCost] = useState<number | null>(null);
-  const [slippageMode, setSlippageMode] = useState<SlippageMode>("auto");
   const [swapButtonTitle, setSwapButtonTitle] = useState<string>("Review");
   const [review, setReview] = useState<boolean>(false);
   const [showInsufficientBalance, setShowInsufficientBalance] = useState(true);
@@ -719,14 +718,8 @@ const Swap = () => {
         </div>
       </div>
       {swapPending && <div className={styles.loadingOverlay} />}
-      <SettingsModal title="Settings">
-        <SettingsModalContent
-          slippage={slippage}
-          slippageMode={slippageMode}
-          setSlippage={setSlippage}
-          setSlippageMode={setSlippageMode}
-          closeModal={closeSettingsModal}
-        />
+      <SettingsModal title={`Slippage tolerance: ${slippage / 100}%`}>
+        <SettingsModalContent slippage={slippage} setSlippage={setSlippage} />
       </SettingsModal>
       <CoinsModal title="Choose token">
         <CoinsListModal selectCoin={handleCoinSelection} balances={balances} />
