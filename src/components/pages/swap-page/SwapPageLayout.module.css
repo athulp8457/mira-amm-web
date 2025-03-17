@@ -17,7 +17,7 @@
 
 .gradientBackground {
   position: absolute;
-  margin-top: 300px;
+  margin-top: 200px;
   margin-left: 800px;
   transform: translateX(-50%);
   width: 100%;
@@ -38,5 +38,11 @@
 @media (min-width: 1024px) {
   .swapLayoutWrapper {
     /* padding: 84px 16px 48px; */
+  }
+}
+
+@media (max-width: 1024px) {
+  .gradientBackground {
+    display: none;
   }
 }
