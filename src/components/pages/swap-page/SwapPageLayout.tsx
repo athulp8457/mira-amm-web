@@ -23,6 +23,7 @@ const SwapPageLayout = () => {
           className={`${styles.gradientBackground} ${
             isConnected ? styles.visible : styles.hidden
           }`}
+          draggable={false}
         />
       </main>
       <Footer />
