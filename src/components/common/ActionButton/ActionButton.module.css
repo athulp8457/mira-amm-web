@@ -145,5 +145,5 @@
 
 .loadingAnimation::before {
   content: "\200B";
-  animation: cycleSymbols 6s infinite;
+  animation: cycleSymbols 4s infinite;
 }
