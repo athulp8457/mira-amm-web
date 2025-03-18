@@ -7,9 +7,10 @@
 }
 
 .contentSection {
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 24px;
 }
 
 .contentSection > div:not:last-child {
@@ -22,11 +23,23 @@
   justify-content: space-between;
 }
 
+.actionBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.actionBlockMobile {
+  width: 100%;
+  flex-direction: column;
+}
+
 .infoBlock {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 12px;
+  padding: 16px;
   background-color: var(--background-secondary);
   border-radius: 16px;
   border: 11px solid var(--background-tertiary);
@@ -54,7 +67,6 @@
 }
 
 .miraBlock {
-  height: 160px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -62,17 +74,27 @@
   border-radius: 16px;
   background-image: url("../../../../../../assets/mira-block-bg.png");
   background-size: cover;
+  gap: 6px;
+  width: 345px;
 }
 
 .miraLogo {
-  width: 64px;
-  height: 32px;
+  margin-bottom: 6px;
+}
+
+.infoText {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 100%;
+}
+
+.positionText {
+  color: var(--mc-black);
 }
 
 .tokenDisplayValue,
 .numberAndCopy {
-  font-size: 14px;
-  color: var(--background-white);
+  color: var(--primary-white);
 }
 
 .numberAndCopy {
@@ -157,6 +179,22 @@
   align-items: center;
 }
 
+.actionButton {
+  width: 165px;
+  padding: 8px 24px;
+  font-size: 14px;
+}
+
+.topRow {
+  display: flex;
+  gap: 16px;
+}
+
+.infoBlocks {
+  width: 450px;
+  flex-direction: column;
+}
+
 @media (min-width: 1024px) {
   .viewPositionLayout {
     /* min-height: calc(100vh - 157px); */
@@ -179,31 +217,6 @@
     padding: 4px 8px;
     font-size: 13px;
     line-height: 15px;
-  }
-
-  .withdrawButton {
-    max-width: 191px;
-    padding: 8px 24px;
-    font-size: 13px;
-    line-height: 15px;
-  }
-
-  .topRow {
-    display: flex;
-    gap: 12px;
-    width: 100%;
-  }
-
-  .miraBlock {
-    height: unset;
-    flex: 1;
-    width: 346px;
-  }
-
-  .infoBlocks {
-    flex: 1;
-    width: 100%;
-    flex-direction: column;
   }
 
   .priceBlocksDesktop {

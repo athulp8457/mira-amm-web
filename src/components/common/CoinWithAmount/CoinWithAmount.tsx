@@ -1,9 +1,8 @@
-import {CoinName, coinsConfig} from "@/src/utils/coinsConfig";
-
 import styles from "./CoinWithAmount.module.css";
 import {B256Address} from "fuels";
 import {useAssetImage} from "@/src/hooks/useAssetImage";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
+import Image from "next/image";
 
 type Props = {
   amount: string;
@@ -16,7 +15,15 @@ const CoinWithAmount = ({amount, assetId}: Props) => {
 
   return (
     <div className={styles.coinWithAmount}>
-      {icon && <img src={icon} alt={`${metadata.symbol} icon`} />}
+      {icon && (
+        <Image
+          src={icon}
+          alt={`${metadata.symbol} icon`}
+          width={40}
+          height={40}
+          priority
+        />
+      )}
       <div className={styles.info}>
         <p className={styles.amount}>{amount}</p>
         <p className={styles.name}>{metadata.symbol}</p>

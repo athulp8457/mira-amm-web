@@ -20,12 +20,12 @@
   font-weight: 500;
   font-size: 18px;
   line-height: 22px;
-  color: var(--content-primary);
+  color: var(--mc-black);
 }
 
 .name {
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-  color: var(--content-dimmed-light);
+  color: var(--mc-grey-4);
 }

@@ -18,7 +18,6 @@ const Pools = () => {
   const {data, isLoading, moreInfo} = usePoolsData();
 
   const {
-    totalCount,
     totalPages,
     queryVariables: {search, page, orderBy},
     setQueryVariables,

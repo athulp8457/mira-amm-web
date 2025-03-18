@@ -1,6 +1,6 @@
 import styles from "./DesktopPools.module.css";
-import { clsx } from "clsx";
-import { PoolData } from "@/src/hooks/usePoolsData";
+import {clsx} from "clsx";
+import {PoolData} from "@/src/hooks/usePoolsData";
 import DesktopPoolRow from "./DesktopPoolRow";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import Link from "next/link";
@@ -12,7 +12,7 @@ type Props = {
   handleSort: (key: string) => void;
 };
 
-const DesktopPools = ({ poolsData, orderBy, handleSort }: Props) => {
+const DesktopPools = ({poolsData, orderBy, handleSort}: Props) => {
   if (!poolsData) {
     return null;
   }

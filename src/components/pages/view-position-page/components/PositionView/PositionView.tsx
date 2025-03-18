@@ -1,7 +1,7 @@
 "use client";
 
 import BackLink from "@/src/components/common/BackLink/BackLink";
-
+import Link from "next/link";
 import ActionButton from "@/src/components/common/ActionButton/ActionButton";
 import AprBadge from "@/src/components/common/AprBadge/AprBadge";
 import CoinPair from "@/src/components/common/CoinPair/CoinPair";
@@ -235,10 +235,10 @@ const PositionView = ({pool}: Props) => {
           <div className={styles.miraLogo}>
             <MiraTextLogo />
           </div>
-          <p className={styles.tokenDisplayValue}>
+          <p className={clsx(styles.tokenDisplayValue, styles.infoText)}>
             {lpTokenDisplayValue} LP tokens
           </p>
-          <p className={styles.numberAndCopy}>
+          <p className={clsx(styles.numberAndCopy, styles.infoText)}>
             Asset ID: {formattedLpTokenAssetId}
             <IconButton onClick={handleCopy}>
               <CopyIcon />
@@ -279,9 +279,17 @@ const PositionView = ({pool}: Props) => {
           </div>
         </div>
         <div className={styles.sticky}>
-          <ActionButton onClick={handleWithdrawLiquidity} fullWidth>
-            Remove Liquidity
-          </ActionButton>
+          <div className={clsx(styles.actionBlock, styles.actionBlockMobile)}>
+            <Link
+              href={`/liquidity/add?pool=${poolKey}`}
+              style={{width: "100%"}}
+            >
+              <ActionButton fullWidth>Add liquidity</ActionButton>
+            </Link>
+            <ActionButton onClick={handleWithdrawLiquidity} fullWidth>
+              Remove Liquidity
+            </ActionButton>
+          </div>
         </div>
       </section>
       <section className={clsx(styles.contentSection, "desktopOnly")}>
@@ -290,27 +298,36 @@ const PositionView = ({pool}: Props) => {
             <CoinPair
               firstCoin={pool[0].bits}
               secondCoin={pool[1].bits}
-              withFeeBelow
+              withPoolDescription
               isStablePool={isStablePool}
             />
-            <PositionLabel className={styles.smallLabel} />
+            {/* <PositionLabel className={styles.smallLabel} /> */}
           </div>
-          <ActionButton
-            className={styles.withdrawButton}
-            onClick={handleWithdrawLiquidity}
-          >
-            Remove Liquidity
-          </ActionButton>
+
+          <div className={styles.actionBlock}>
+            <ActionButton
+              className={styles.actionButton}
+              onClick={handleWithdrawLiquidity}
+              variant="secondary"
+            >
+              Remove liquidity
+            </ActionButton>
+            <Link href={`/liquidity/add?pool=${poolKey}`}>
+              <ActionButton className={styles.actionButton}>
+                Add liquidity
+              </ActionButton>
+            </Link>
+          </div>
         </div>
         <div className={styles.topRow}>
           <div className={styles.miraBlock}>
             <div className={styles.miraLogo}>
               <MiraTextLogo />
             </div>
-            <p className={styles.tokenDisplayValue}>
+            <p className={clsx(styles.tokenDisplayValue, styles.infoText)}>
               {lpTokenDisplayValue} LP tokens
             </p>
-            <p className={styles.numberAndCopy}>
+            <p className={clsx(styles.numberAndCopy, styles.infoText)}>
               Asset ID: {formattedLpTokenAssetId}
               <IconButton onClick={handleCopy}>
                 <CopyIcon />
@@ -319,10 +336,14 @@ const PositionView = ({pool}: Props) => {
           </div>
           <div className={styles.infoBlocks}>
             <div className={styles.infoBlock}>
-              <p>Liquidity</p>
+              <p className={clsx(styles.infoText, styles.positionText)}>
+                Your position
+              </p>
               {isMatching ? (
                 <div className={styles.aprBadge}>
-                  <p>APR &nbsp;</p>
+                  <p className={clsx(styles.infoText, styles.positionText)}>
+                    APR &nbsp;
+                  </p>
                   <AprBadge
                     aprValue={aprValue}
                     poolKey={poolKey}
