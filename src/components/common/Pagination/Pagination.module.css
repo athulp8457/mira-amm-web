@@ -40,6 +40,10 @@
   display: inline-block;
 }
 
+.paginationButton:hover:not(:disabled):not(.active) {
+  background-color: var(--background-grey-light);
+}
+
 @media (max-width: 600px) {
   .paginationButton {
     padding: 6px 8px;
