@@ -6,7 +6,7 @@ import {CurrencyBoxMode} from "@/src/components/common/Swap/Swap";
 
 import styles from "./CurrencyBox.module.css";
 import TextButton from "@/src/components/common/TextButton/TextButton";
-import {DefaultLocale, MinEthValueBN} from "@/src/utils/constants";
+import {MinEthValueBN} from "@/src/utils/constants";
 import {B256Address, BN} from "fuels";
 import useAssetMetadata from "@/src/hooks/useAssetMetadata";
 import fiatValueFormatter from "@/src/utils/abbreviateNumber";
@@ -122,7 +122,11 @@ const CurrencyBox = ({
             onChange={handleChange}
           />
         )}
-        <Coin assetId={assetId} onClick={handleCoinSelectorClick} />
+        <Coin
+          assetId={assetId}
+          onClick={handleCoinSelectorClick}
+          coinSelectionDisabled={!Boolean(onCoinSelectorClick)}
+        />
       </div>
       <div className={styles.estimateAndBalance}>
         <p className={clsx(styles.fiatValue, "mc-mono-s")}>
