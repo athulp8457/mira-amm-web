@@ -71,6 +71,7 @@ const CurrencyBox = ({
   };
 
   const handleMaxClick = useCallback(() => {
+    if (!balance.gt(0)) return;
     let amountStringToSet;
     // TODO ETH AssetId
     if (metadata.symbol === "ETH" && mode === "sell") {
@@ -83,7 +84,14 @@ const CurrencyBox = ({
     }
 
     setAmount(amountStringToSet);
-  }, [assetId, mode, balance, setAmount, metadata]);
+  }, [
+    balance,
+    metadata.symbol,
+    metadata.decimals,
+    mode,
+    setAmount,
+    balanceValue,
+  ]);
 
   const coinNotSelected = assetId === null;
 
@@ -91,7 +99,9 @@ const CurrencyBox = ({
   const usdValue =
     !isNaN(numericValue) && Boolean(usdRate)
       ? fiatValueFormatter(numericValue * usdRate!)
-      : null;
+      : !Boolean(usdRate)
+        ? "-"
+        : fiatValueFormatter(0);
 
   return (
     <div className={clsx(styles.currencyBox, className)}>
@@ -128,18 +138,19 @@ const CurrencyBox = ({
           coinSelectionDisabled={!Boolean(onCoinSelectorClick)}
         />
       </div>
-      <div className={styles.estimateAndBalance}>
-        <p className={clsx(styles.fiatValue, "mc-mono-s")}>
-          {usdValue !== null && `${usdValue}`}
-        </p>
-        {balance.gt(0) && (
+      {assetId && (
+        <div className={styles.estimateAndBalance}>
+          <p className={clsx(styles.fiatValue, "mc-mono-s")}>{`${usdValue}`}</p>
           <span className={clsx(styles.balance, "mc-type-s")}>
-            Balance: <span className="mc-mono-s">{balanceValue}</span>
+            Balance:{" "}
+            <span className="mc-mono-s">
+              {balance.gt(0) ? balanceValue : 0}
+            </span>
             &nbsp;
             <TextButton onClick={handleMaxClick}>Max</TextButton>
           </span>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
