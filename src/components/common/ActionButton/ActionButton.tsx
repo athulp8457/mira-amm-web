@@ -67,7 +67,7 @@ const ActionButton = forwardRef<HTMLButtonElement, Props>(function ActionButton(
       type={type || "button"}
       ref={ref}
     >
-      {loading ? <LoadingIndicator /> : children}
+      {!loading ? <LoadingIndicator {...(fullWidth && { fontSize: "mc-type-xxl" })} /> : children}
     </button>
   );
 });
