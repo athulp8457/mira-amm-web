@@ -2,7 +2,7 @@ import React from "react";
 import CoinWithAmount from "@/src/components/common/CoinWithAmount/CoinWithAmount";
 import styles from "./ReserveItem.module.css";
 import {useFormattedReserveValue} from "./useFormattedReserveValue";
-import Loader from "@/src/components/common/Loader/Loader";
+import LoadingIndicator from "@/src/components/common/LoadingIndicator/LoadingIndicator";
 
 interface ReserveItemsProps {
   assetId: string;
@@ -26,11 +26,15 @@ const ReserveItem = ({
       <CoinWithAmount assetId={assetId} amount={coinAmount} withName />
       {usdValue && reserve ? (
         <div className={styles.reserveValues}>
-          <p>{Number(reserve?.toFixed(2)).toLocaleString()}</p>
-          {usdValue && <p>${usdValue === "NaN" ? "~0" : usdValue}</p>}
+          <p className="mc-mono-l">
+            {Number(reserve?.toFixed(2)).toLocaleString()}
+          </p>
+          {usdValue && (
+            <p className="mc-mono-m">${usdValue === "NaN" ? "~0" : usdValue}</p>
+          )}
         </div>
       ) : (
-        <Loader color="gray" />
+        <LoadingIndicator fontSize="mc-mono-m" />
       )}
     </div>
   );
