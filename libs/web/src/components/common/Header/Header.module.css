@@ -53,6 +53,15 @@
   display: none;
 }
 
+.navMobile {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 0 10px;
+  z-index: 999;
+  background-color: var(--background-primary);
+}
+
 .right {
   display: none;
 }
@@ -81,9 +90,96 @@
   color: var(--transparent-white) !important;
 }
 
+.link {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  color: var(--content-secondary);
+  background: linear-gradient(
+    to right,
+    transparent 100%,
+    var(--content-primary) 0%
+  );
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+}
+
+.activeLink {
+  color: var(--background-white);
+  background: linear-gradient(
+    to right,
+    var(--content-primary) 100%,
+    transparent 0%
+  );
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
+  transition: color 0.4s ease-ins;
+}
+
+@keyframes fillBackgroundLeftToRight {
+  0% {
+    background-size: 0% 100%;
+  }
+
+  100% {
+    background-size: 100% 100%;
+  }
+}
+
+@keyframes fillBackgroundRightToLeft {
+  0% {
+    background-size: 0% 100%;
+    background-position: right;
+  }
+
+  100% {
+    background-size: 100% 100%;
+    background-position: right;
+  }
+}
+
+.animateToRight {
+  animation: fillBackgroundLeftToRight 0.4s forwards;
+}
+
+.animateToLeft {
+  animation: fillBackgroundRightToLeft 0.4s forwards;
+}
+
+.staticFill {
+  background-size: 100% 100%;
+}
+
+.link:hover:not(.activeLink) {
+  background: var(--background-grey-light);
+  color: var(--content-secondary);
+}
+
+.activeLink:hover {
+  opacity: 0.9;
+  color: var(--background-white);
+}
+
 @media (max-width: 768px) {
   .promo_text p {
     font-size: 15px;
+  }
+}
+
+@media (min-width: 768px) {
+  .center {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .navMobile {
+    display: none;
   }
 }
 
@@ -113,43 +209,12 @@
     gap: 24px;
   }
 
-  .center {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-  }
-
   .right {
     display: flex;
     flex: 1;
     justify-content: flex-end;
     align-items: center;
     gap: 24px;
-  }
-
-  .link {
-    display: inline-flex;
-    position: relative;
-    align-items: center;
-    padding: 6px 12px;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-    color: var(--content-secondary);
-  }
-
-  .activeLink {
-    background: var(--content-primary);
-    color: var(--background-white);
-  }
-
-  .link:hover:not(.activeLink) {
-    background: var(--background-grey-light);
-    color: var(--content-secondary);
-  }
-
-  .activeLink:hover {
-    opacity: 0.9;
-    color: var(--background-white);
   }
 
   .linkAlike {

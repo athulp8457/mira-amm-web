@@ -1,6 +1,6 @@
 import MobileMenu from "@/src/components/common/Header/components/MobileMenu/MobileMenu";
 import Logo from "@/src/components/common/Logo/Logo";
-
+import {useLocalStorage} from "usehooks-ts";
 import styles from "./Header.module.css";
 import Link from "next/link";
 import {clsx} from "clsx";
@@ -28,9 +28,14 @@ type Props = {
 const PROMO_BANNER_STORAGE_KEY = "fuel-boost-program-promo-banner-closed";
 
 const ISSERVER = typeof window === "undefined";
+
 const Header = ({isHomePage}: Props) => {
   const pathname = usePathname();
   const {isConnected} = useIsConnected();
+  const [previousPage, setPreviousPage] = useLocalStorage<string | null>(
+    "previousPage",
+    null,
+  );
 
   const [isPromoShown, setIsPromoShown] = useState(false);
 
@@ -44,6 +49,36 @@ const Header = ({isHomePage}: Props) => {
   const handleCloseBanner = () => {
     setIsPromoShown(false);
     localStorage.setItem(PROMO_BANNER_STORAGE_KEY, "true");
+  };
+
+  const swapClick = () => {
+    if (pathname === "/liquidity/") {
+      setPreviousPage("liquidity");
+    } else if (pathname === "/points/") {
+      setPreviousPage("points");
+    } else {
+      setPreviousPage(null);
+    }
+  };
+
+  const liquidityClick = () => {
+    if (pathname === "/") {
+      setPreviousPage("swap");
+    } else if (pathname === "/points/") {
+      setPreviousPage("points");
+    } else {
+      setPreviousPage(null);
+    }
+  };
+
+  const pointsClick = () => {
+    if (pathname === "/") {
+      setPreviousPage("swap");
+    } else if (pathname === "/liquidity/") {
+      setPreviousPage("liquidity");
+    } else {
+      setPreviousPage(null);
+    }
   };
 
   return (
@@ -69,32 +104,46 @@ const Header = ({isHomePage}: Props) => {
           <Logo />
         </div>
 
-        <div className={styles.center}>
-          <div className={clsx("desktopOnly", "mc-type-l", styles.links)}>
+        <div className={clsx(styles.center)}>
+          <div className={clsx("mc-type-l", styles.links)}>
             <Link
               //TEMPORARY ROUTING SINCE LANDING PAGE IS DISABLED
               href="/"
               className={clsx(
                 styles.link,
                 pathname === "/" && styles.activeLink,
+                (previousPage === "swap" || previousPage === null) &&
+                  styles.staticFill,
+                previousPage === "points" && styles.animateToLeft,
+                previousPage === "liquidity" && styles.animateToLeft,
               )}
+              onClick={swapClick}
             >
               Swap
             </Link>
             <Link
+              onClick={liquidityClick}
               href="/liquidity"
               className={clsx(
                 styles.link,
                 pathname.includes("/liquidity") && styles.activeLink,
+                previousPage === "swap" && styles.animateToRight,
+                previousPage === "points" && styles.animateToLeft,
+                (previousPage === "liquidity" || previousPage === null) &&
+                  styles.staticFill,
               )}
             >
               Liquidity
             </Link>
             <Link
+              onClick={pointsClick}
               href="/points"
               className={clsx(
                 styles.link,
                 pathname.includes("/points") && styles.activeLink,
+                previousPage === "points"
+                  ? styles.staticFill
+                  : styles.animateToRight,
               )}
             >
               Points
@@ -109,7 +158,7 @@ const Header = ({isHomePage}: Props) => {
           </div>
         </div>
 
-        <div className={clsx("desktopOnly", styles.right)}>
+        <div className={clsx(styles.right)}>
           {isHomePage && (
             <>
               <a
@@ -139,9 +188,62 @@ const Header = ({isHomePage}: Props) => {
 
         <div className={clsx("mobileOnly", styles.links)}>
           <DisconnectMobile className={styles.disconnectMobile} />
-          <MobileMenu />
+          {/*   <MobileMenu /> */}
         </div>
       </section>
+
+      <div className={clsx("mobileOnly", styles.navMobile)}>
+        <div className={clsx("mc-type-b", styles.links)}>
+          <Link
+            href="/"
+            className={clsx(
+              styles.link,
+              pathname === "/" && styles.activeLink,
+              (previousPage === "swap" || previousPage === null) &&
+                styles.staticFill,
+              previousPage === "points" && styles.animateToLeft,
+              previousPage === "liquidity" && styles.animateToLeft,
+            )}
+            onClick={swapClick}
+          >
+            Swap
+          </Link>
+          <Link
+            href="/liquidity"
+            className={clsx(
+              styles.link,
+              pathname.includes("/liquidity") && styles.activeLink,
+              previousPage === "swap" && styles.animateToRight,
+              previousPage === "points" && styles.animateToLeft,
+              (previousPage === "liquidity" || previousPage === null) &&
+                styles.staticFill,
+            )}
+            onClick={liquidityClick}
+          >
+            Liquidity
+          </Link>
+          <Link
+            onClick={pointsClick}
+            href="/points"
+            className={clsx(
+              styles.link,
+              pathname.includes("/points") && styles.activeLink,
+              previousPage === "points"
+                ? styles.staticFill
+                : styles.animateToRight,
+            )}
+          >
+            Points
+          </Link>
+          <a
+            href={`${FuelAppUrl}/bridge?from=eth&to=fuel&auto_close=true&=true`}
+            className={styles.link}
+            target="_blank"
+          >
+            Bridge
+          </a>
+        </div>
+      </div>
     </header>
   );
 };
